@@ -26,6 +26,7 @@ os.environ["ANTS_PLATFORM_HOST"] = _HOST
 _logger.error(f"[ANTS_DEBUG] PRE-INIT singleton instances: {list(LangfuseResourceManager._instances.keys())}")
 
 _ants_platform = AntsPlatform(public_key=_PK, secret_key=_SK, host=_HOST, timeout=30)
+_ants_platform.flush()
 
 # Debug: check singleton state AFTER our init
 _logger.error(f"[ANTS_DEBUG] POST-INIT singleton instances: {list(LangfuseResourceManager._instances.keys())}")
@@ -36,6 +37,8 @@ _listener = EventListener(
     agent_name="research_and_blog_crew",
     agent_display_name="Research & Blog Crew v1.0",
 )
+
+
 
 # Debug: check what client the listener got
 _logger.error(f"[ANTS_DEBUG] listener.client public_key={getattr(_listener.client, '_public_key', 'N/A')}, host={getattr(_listener.client, '_host', 'N/A')}")

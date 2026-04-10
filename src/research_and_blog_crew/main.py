@@ -14,7 +14,5 @@ def run():
         ResearchAndBlogCrew().crew().kickoff(inputs=inputs)
     except Exception as e:
         raise Exception(f"An error occurred while running the crew: {e}")
-    finally:
-        _ants_platform.flush()
 
 
