@@ -3,14 +3,25 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 
+from ants_platform import AntsPlatform
+from ants_platform.crewai import EventListener
+
+# Initialize Ants Platform observability at module level so it runs
+# regardless of entry point (main.py or CrewAI deployment runner)
+_ants_platform = AntsPlatform(timeout=30)
+_listener = EventListener(
+    agent_name="research_and_blog_crew",
+    agent_display_name="Research & Blog Crew v1.0",
+)
+
 
 # define the class for our crew
 @CrewBase
 class ResearchAndBlogCrew():
-    
+
     agents: list[BaseAgent]
     tasks: list[Task]
-    
+
     # define the paths of config files
     agents_config = "config/agents.yaml"
     tasks_config = "config/tasks.yaml"
