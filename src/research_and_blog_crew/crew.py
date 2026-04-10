@@ -8,6 +8,11 @@ from ants_platform.crewai import EventListener
 
 # Initialize Ants Platform observability at module level so it runs
 # regardless of entry point (main.py or CrewAI deployment runner)
+import os
+os.environ["ANTS_PLATFORM_PUBLIC_KEY"] = "pk-ap-4ac421b1-33b2-4374-ad9d-5fcd7996e9c4"
+os.environ["ANTS_PLATFORM_SECRET_KEY"] = "sk-ap-235091e4-711f-4fbf-9dab-6fd9255a0595"
+os.environ["ANTS_PLATFORM_HOST"] = "https://api.agenticants.ai"
+
 _ants_platform = AntsPlatform(timeout=30)
 _listener = EventListener(
     agent_name="research_and_blog_crew",
