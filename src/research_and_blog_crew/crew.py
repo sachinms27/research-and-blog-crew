@@ -3,40 +3,19 @@ from crewai.project import CrewBase, agent, crew, task
 from crewai.agents.agent_builder.base_agent import BaseAgent
 from typing import List
 
+import os
 from ants_platform import AntsPlatform
 from ants_platform.crewai import EventListener
 
 # Initialize Ants Platform observability at module level so it runs
 # regardless of entry point (main.py or CrewAI deployment runner)
-import os
-import httpx
-import logging
-
-logger = logging.getLogger(__name__)
-
 os.environ["ANTS_PLATFORM_PUBLIC_KEY"] = "pk-ap-4ac421b1-33b2-4374-ad9d-5fcd7996e9c4"
 os.environ["ANTS_PLATFORM_SECRET_KEY"] = "sk-ap-235091e4-711f-4fbf-9dab-6fd9255a0595"
 os.environ["ANTS_PLATFORM_HOST"] = "https://api.agenticants.ai"
 
-# Debug: test connectivity to Ants Platform API from deployed environment
-try:
-    resp = httpx.get("https://api.agenticants.ai/api/public/health", timeout=10)
-    logger.error(f"[ANTS_DEBUG] Health check: status={resp.status_code}, body={resp.text[:200]}")
-except Exception as e:
-    logger.error(f"[ANTS_DEBUG] Health check FAILED: {e}")
-
-try:
-    resp = httpx.get(
-        "https://api.agenticants.ai/api/public/projects",
-        auth=("pk-ap-4ac421b1-33b2-4374-ad9d-5fcd7996e9c4", "sk-ap-235091e4-711f-4fbf-9dab-6fd9255a0595"),
-        timeout=10,
-    )
-    logger.error(f"[ANTS_DEBUG] Auth test: status={resp.status_code}, body={resp.text[:200]}")
-except Exception as e:
-    logger.error(f"[ANTS_DEBUG] Auth test FAILED: {e}")
-
 _ants_platform = AntsPlatform(timeout=30)
 _listener = EventListener(
+    public_key=_ants_platform._public_key,
     agent_name="research_and_blog_crew",
     agent_display_name="Research & Blog Crew v1.0",
 )
